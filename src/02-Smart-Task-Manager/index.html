@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Task Manager</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Task Manager</h1>
+        <p class="stats">Active Tasks: <span id="taskCount">0</span></p>
+
+        <div class="input-group">
+            <input type="text" id="taskInput" placeholder="Enter task name...">
+            <button onclick="addNewTask()">Add Task</button>
+        </div>
+
+        <div id="errorBox" class="error-message"></div>
+
+        <ul id="taskList">
+            </ul>
+    </div>
+
+    <script src="script.js"></script>
+    <script>
+        // UI functions to connect with your logic
+        function addNewTask() {
+            const input = document.getElementById('taskInput');
+            const errorBox = document.getElementById('errorBox');
+            const result = handleAddTask(input.value);
+
+            if (result.success) {
+                errorBox.innerText = ""; // Clear errors
+                const list = document.getElementById('taskList');
+                
+                // Create list item
+                const li = document.createElement('li');
+                li.innerHTML = `
+                    <span><strong>#${result.id}</strong> - ${result.task}</span>
+                `;
+                list.appendChild(li);
+                
+                // Update Stats
+                document.getElementById('taskCount').innerText = result.totalActive;
+                
+                // Clear input
+                input.value = "";
+            } else {
+                errorBox.innerText = result.message;
+            }
+        }
+    </script>
+</body>
+</html>
